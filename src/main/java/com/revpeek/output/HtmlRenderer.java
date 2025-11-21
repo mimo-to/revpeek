@@ -9,7 +9,7 @@ public class HtmlRenderer {
         
         html.append("<!DOCTYPE html>\n");
         html.append("<html>\n<head>\n");
-        html.append(" <title>RevPeek Analytics Report</title>\n");
+        html.append("  <title>RevPeek Analytics Report</title>\n");
         html.append(" <meta charset=\"UTF-8\">\n");
         html.append("  <style>\n");
         html.append("    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }\n");
@@ -26,7 +26,7 @@ public class HtmlRenderer {
         html.append("    tr:nth-child(even) { background-color: #f2f2f2; }\n");
         html.append("    .bar { display: inline-block; height: 20px; background-color: #3498db; vertical-align: middle; }\n");
         html.append("    .footer { margin-top: 30px; text-align: center; color: #7f8c8d; font-size: 0.9em; }\n");
-        html.append("  </style>\n");
+        html.append(" </style>\n");
         html.append("</head>\n<body>\n");
         html.append("<div class=\"container\">\n");
         
