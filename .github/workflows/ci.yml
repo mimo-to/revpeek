@@ -85,8 +85,12 @@ jobs:
         # Create JAR
         jar -c -m build/manifest.txt -f build/revpeek.jar -C build .
         
-        # Embed picocli classes into the JAR
-        jar -uf build/revpeek.jar -C lib .
+        # Embed picocli classes into the JAR (Shading)
+        mkdir -p temp_picocli
+        unzip lib/picocli-*.jar -d temp_picocli
+        rm -rf temp_picocli/META-INF
+        jar -uf build/revpeek.jar -C temp_picocli .
+        rm -rf temp_picocli
       shell: bash
     
     - name: Build JAR (Windows)
