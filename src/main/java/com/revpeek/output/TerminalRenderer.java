@@ -68,11 +68,11 @@ public class TerminalRenderer {
             String key = entry.getKey();
             int count = entry.getValue();
             
-            // Create a simple bar using Unicode blocks
+            // Create a simple bar using ASCII characters
             int barLength = Math.max(1, (count * 30) / maxCount);
             StringBuilder bar = new StringBuilder();
             for (int i = 0; i < barLength; i++) {
-                bar.append("█");
+                bar.append("#");
             }
             
             System.out.printf("  %-25s %5d %s\n", key, count, getColored(bar.toString(), "\033[36m")); // Cyan
@@ -107,11 +107,11 @@ public class TerminalRenderer {
             String date = entry.getKey();
             int count = entry.getValue();
             
-            // Create a simple bar using Unicode blocks
+            // Create a simple bar using ASCII characters
             int barLength = Math.max(1, (count * 30) / maxCount);
             StringBuilder bar = new StringBuilder();
             for (int i = 0; i < barLength; i++) {
-                bar.append("█");
+                bar.append("#");
             }
             
             System.out.printf("  %-12s %3d %s\n", date, count, getColored(bar.toString(), "\033[35m")); // Magenta
