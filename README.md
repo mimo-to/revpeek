@@ -36,22 +36,18 @@ curl -sL https://github.com/mimo-to/revpeek/releases/latest/download/revpeek.jar
    java -jar revpeek.jar
    ```
 
-### 🌍 Global Installation (Run from anywhere)
-To use `revpeek` as a global command in any terminal:
+### 🌍 Global Installation (Recommended)
+To install `revpeek` globally so you can run it from any folder:
 
 **Windows (PowerShell):**
-1. Create a directory for your tools (e.g., `C:\Tools`).
-2. Move `revpeek.jar` there.
-3. Create a file named `revpeek.bat` in that folder with this content:
-   ```batch
-   @echo off
-   java -jar "C:\Tools\revpeek.jar" %*
-   ```
-4. Add `C:\Tools` to your System PATH environment variable.
-5. Restart your terminal. Now you can type `revpeek` anywhere!
+Copy and run this command:
+```powershell
+powershell -c "irm https://raw.githubusercontent.com/mimo-to/revpeek/main/install.ps1 | iex"
+```
 
 **Unix/Linux/macOS:**
 ```bash
+curl -sL https://github.com/mimo-to/revpeek/releases/latest/download/revpeek.jar -o revpeek.jar
 sudo mv revpeek.jar /usr/local/bin/revpeek-jar
 echo '#!/bin/bash' | sudo tee /usr/local/bin/revpeek
 echo 'java -jar /usr/local/bin/revpeek-jar "$@"' | sudo tee -a /usr/local/bin/revpeek
