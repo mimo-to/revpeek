@@ -31,7 +31,7 @@ public class HtmlRenderer {
         html.append("<div class=\"container\">\n");
         
         // Header
-        html.append("  <h1>📊 RevPeek Analytics Report</h1>\n");
+        html.append("  <h1>RevPeek Analytics Report</h1>\n");
         
         // Summary
         html.append("  <div class=\"summary\">\n");
@@ -55,7 +55,7 @@ public class HtmlRenderer {
         
         // Top Authors
         html.append("  <div class=\"section\">\n");
-        html.append("    <h2>👥 Top Authors</h2>\n");
+        html.append("    <h2>Top Authors</h2>\n");
         html.append("    <table>\n");
         html.append("      <thead><tr><th>Author</th><th>Commits</th><th>Activity</th></tr></thead>\n");
         html.append("      <tbody>\n");
@@ -79,7 +79,7 @@ public class HtmlRenderer {
         
         // File Types
         html.append("  <div class=\"section\">\n");
-        html.append("    <h2>📁 File Types</h2>\n");
+        html.append("    <h2>File Types</h2>\n");
         html.append("    <table>\n");
         html.append("      <thead><tr><th>File Type</th><th>Files</th><th>Distribution</th></tr></thead>\n");
         html.append("      <tbody>\n");

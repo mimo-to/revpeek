@@ -11,7 +11,7 @@ public class MarkdownRenderer {
     public String render(AnalyticsService.CommitStats stats) {
         StringBuilder markdown = new StringBuilder();
         
-        markdown.append("# 📊 RevPeek Analytics Report\n\n");
+        markdown.append("# RevPeek Analytics Report\n\n");
         
         // Summary
         markdown.append("## Summary\n\n");
@@ -21,7 +21,7 @@ public class MarkdownRenderer {
         markdown.append("- **Last Commit**: " + (stats.lastCommitDate != null ? stats.lastCommitDate : "N/A") + "\n\n");
         
         // Top Authors
-        markdown.append("## 👥 Top Authors\n\n");
+        markdown.append("## Top Authors\n\n");
         markdown.append("| Author | Commits | Activity |\n");
         markdown.append("|--------|---------|----------|\n");
         
@@ -49,7 +49,7 @@ public class MarkdownRenderer {
         markdown.append("\n");
         
         // File Types
-        markdown.append("## 📁 File Types\n\n");
+        markdown.append("## File Types\n\n");
         markdown.append("| File Type | Files | Distribution |\n");
         markdown.append("|-----------|-------|--------------|\n");
         

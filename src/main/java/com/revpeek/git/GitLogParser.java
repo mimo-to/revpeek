@@ -38,7 +38,7 @@ public class GitLogParser {
         List<String> cmd = new ArrayList<>();
         cmd.add("log");
         cmd.add("--pretty=format:%H|%an|%ae|%ad|%s");
-        cmd.add("--date=short");  // ← critical
+        cmd.add("--date=short");  // critical
         
         if (since != null && !since.isEmpty()) {
             cmd.add("--since=" + since);
