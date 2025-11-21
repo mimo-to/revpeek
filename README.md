@@ -1,157 +1,114 @@
-# RevPeek - Terminal-First Git Analytics CLI Tool
+# RevPeek - Terminal-First Git Analytics
 
-RevPeek is a terminal-first, zero-GUI Git analytics CLI tool that allows developers to instantly get smart, visual insights about their commit history with no setup, no server, and no GUI.
+> **Instant, beautiful Git insights directly in your terminal.**
+
+RevPeek is a zero-config, terminal-first analytics tool for Git repositories. It parses your commit history to provide visual insights about contributors, activity patterns, and file distribution—all without leaving your command line.
+
+![RevPeek Demo](https://via.placeholder.com/800x400?text=RevPeek+Terminal+Demo)
 
 ## 🚀 Features
 
-- **Terminal-First**: Beautiful visual reports directly in your terminal with ASCII charts, tables, and color coding
-- **Zero Setup**: Just install and run - no configuration required
-- **Multi-Format Output**: Terminal, HTML, Markdown, and JSON formats
-- **Cross-Platform**: Works on Windows, macOS, and Linux
-- **Fast**: Optimized for performance with large repositories
+- **Zero Setup**: No servers, no databases, no config files. Just run it.
+- **Terminal-First**: Beautiful ASCII charts and colored output.
+- **Fast**: Optimized single-pass parsing for large repositories.
+- **Multi-Format**: Export reports to HTML, Markdown, JSON, or plain text.
+- **Cross-Platform**: Runs anywhere Java runs (Windows, macOS, Linux).
 
-## 📦 Installation
+## 📦 Installation & Usage
 
-### Windows (PowerShell)
+### 🚀 Instant Run (One-Liner)
+You can download and run RevPeek instantly without installing anything (requires Java 17+):
+
+**Unix/Linux/macOS:**
+```bash
+curl -sL https://github.com/mimo-to/revpeek/releases/latest/download/revpeek.jar -o revpeek.jar && java -jar revpeek.jar
+```
+
+**Windows (PowerShell):**
 ```powershell
-# Option 1: Using PowerShell installer
-iwr -useb https://revpeek.dev/install.ps1 | iex
-
-# Option 2: Manual installation
-# Download revpeek.ps1 and place it in your PATH
+Invoke-WebRequest -Uri "https://github.com/mimo-to/revpeek/releases/latest/download/revpeek.jar" -OutFile "revpeek.jar"; java -jar revpeek.jar
 ```
 
-### Unix/Linux/macOS
-```bash
-# Using curl (one-liner installation)
-curl -L https://revpeek.dev/install | sh
+### Manual Download
+1. Download `revpeek.jar` from the [Latest Release](https://github.com/mimo-to/revpeek/releases/latest).
+2. Run it in your terminal:
+   ```bash
+   java -jar revpeek.jar
+   ```
 
-# Or using wget
-wget -O - https://revpeek.dev/install | sh
+### Optional: Add to PATH
+To run `revpeek` from anywhere, create a simple alias or wrapper script:
+
+**Bash/Zsh:**
+```bash
+alias revpeek='java -jar /path/to/revpeek.jar'
 ```
 
-### Manual Installation
-1. Download the latest `revpeek.jar` from [releases](https://github.com/mimo-to/revpeek/releases)
-2. Create a launcher script in your PATH:
-   - On Windows: `revpeek.ps1`
-   - On Unix: `revpeek` (executable shell script)
-3. Make sure Java 17+ is installed and in your PATH
-
-## 🚀 Quick Start
-
-RevPeek: Git history, visualized in your terminal — no fluff, no GUI, just insights.
-
-```bash
-curl -L revpeek.dev/install | sh && revpeek
+**PowerShell:**
+```powershell
+Set-Alias -Name revpeek -Value "java -jar C:\path\to\revpeek.jar"
 ```
 
-## 🛠️ Usage
+## �️ Usage
 
-### Basic Analysis
+Navigate to any Git repository and run:
+
 ```bash
-# Analyze current repository (default format: terminal)
 revpeek
-# or
-revpeek analyze
-
-# With specific output format
-revpeek analyze --format=html > report.html
-revpeek analyze --format=markdown > report.md
-revpeek --json  # Output in JSON format (takes precedence over other format options)
 ```
 
-### Advanced Options
+### Common Commands
+
+| Command | Description |
+|---------|-------------|
+| `revpeek` | Analyze the current repository (default) |
+| `revpeek analyze --since=2023-01-01` | Analyze commits from a specific date |
+| `revpeek analyze --format=html -o report.html` | Generate a visual HTML report |
+| `revpeek --json` | Output raw JSON data for custom tooling |
+
+### Examples
+
+**Analyze the last 30 days:**
 ```bash
-# Analyze commits within a date range
-revpeek analyze --since=2023-01-01 --until=2023-12-31
-
-# Export to specific format
-revpeek export --format=html --output=report.html
-
-# Generate shell completions
-revpeek completion --shell=bash > revpeek-completion.bash
+revpeek analyze --since="30 days ago"
 ```
 
-### PowerShell Example
-```powershell
-# Analyze and filter results in PowerShell
-revpeek --json | ConvertFrom-Json | Select-Object -ExpandProperty authors | Where-Object { $_.value -gt 10 }
+**Export a Markdown report for documentation:**
+```bash
+revpeek analyze --format=markdown > ANALYTICS.md
 ```
 
-## 📊 Analytics Provided
+**CI/CD Integration (JSON output):**
+```bash
+revpeek --json | jq '.totalCommits'
+```
 
-- **Summary Statistics**: Total commits, contributors, date range
-- **Top Authors**: Commits by author with visual bars
-- **Commit Activity**: Daily/hourly commit patterns
-- **File Type Distribution**: Programming languages and file extensions used
-- **Timeline Analysis**: Commit frequency over time
+## 🔧 Building from Source
 
-## ⌨️ Shell Completions
-
-Generate and install shell completions:
+Requirements: Java 17+
 
 ```bash
-# Bash
-revpeek completion --shell=bash > /etc/bash_completion.d/revpeek
-
-# Zsh
-revpeek completion --shell=zsh > /usr/local/share/zsh/site-functions/_revpeek
-
-# PowerShell
-# Add the output to your PowerShell profile
-```
-
-## 🔧 Development
-
-### Prerequisites
-- Java 17+
-- Git
-
-### Building from Source
-```bash
-# Clone the repository
 git clone https://github.com/mimo-to/revpeek.git
 cd revpeek
 
-# Build the JAR file
-./build.ps1 # On Windows
-# or
-./gradlew build  # If using Gradle (not currently implemented)
+# Windows
+./build.ps1
 
-# Run directly
-java -jar build/revpeek.jar --help
-```
-
-### Project Structure
-```
-revpeek/
-├── src/main/java/com/revpeek/          # Source code
-│   ├── cli/                           # Command line interface
-│   ├── git/                           # Git operations
-│   ├── analytics/                     # Analytics processing
-│   └── output/                        # Output rendering
-├── bin/                               # Executable scripts
-├── scripts/                           # Installation scripts
-├── build.ps1                          # Windows build script
-└── .github/workflows/ci.yml           # CI/CD pipeline
+# Unix/Linux
+javac -d build -cp "lib/*" src/main/java/com/revpeek/cli/*.java ...
+jar -c -f build/revpeek.jar -C build .
 ```
 
 ## 🤝 Contributing
 
+Contributions are welcome! Please feel free to submit a Pull Request.
+
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Add tests if applicable
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built with [picocli](https://picocli.info/) for command-line parsing
-- Inspired by tools like `htop` for terminal-first design
-- Thanks to all contributors who help make RevPeek better
+Distributed under the MIT License. See `LICENSE` for more information.
