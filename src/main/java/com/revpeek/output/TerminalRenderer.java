@@ -20,36 +20,44 @@ public class TerminalRenderer {
     }
     
     public void render(AnalyticsService.CommitStats stats) {
-        System.out.println(getColored("+-----------------------------------------+", "\033[36m")); // Cyan
-        System.out.println(getColored("|              \033[1mRevPeek Analytics\033[0m              |", "\033[36m")); // Cyan, bold
-        System.out.println(getColored("+-----------------------------------------+", "\033[36m")); // Cyan
-        System.out.println();
-        
-        // Summary
-        System.out.println(getColored("Summary", "\033[1;33m")); // Bold yellow
-        System.out.println("  Total Commits: " + getColored(String.valueOf(stats.totalCommits), "\033[32m")); // Green
-        System.out.println(" Date Range: " + getColored(stats.firstCommitDate + " to " + stats.lastCommitDate, "\033[32m")); // Green
-        System.out.println();
-        
-        // Top Authors
-        System.out.println(getColored("Top Authors", "\033[1;33m")); // Bold yellow
-        renderTopItems(stats.authorCommits, 10);
-        System.out.println();
-        
-        // Commit Activity
-        System.out.println(getColored("Commit Activity", "\033[1;33m")); // Bold yellow
-        renderBarChart(stats.dailyCommits, 20);
-        System.out.println();
-        
-        // File Types
-        System.out.println(getColored("File Types", "\033[1;33m")); // Bold yellow
-        renderTopItems(stats.fileTypeDistribution, 10);
-        System.out.println();
-        
-        System.out.println(getColored("Run with --help for more options", "\033[2m")); // Dim
+        System.out.print(renderToString(stats));
     }
     
-    private void renderTopItems(Map<String, Integer> items, int maxItems) {
+    public String renderToString(AnalyticsService.CommitStats stats) {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(getColored("+-----------------------------------------+\n", "\033[36m")); // Cyan
+        sb.append(getColored("|              \033[1mRevPeek Analytics\033[0m              |\n", "\033[36m")); // Cyan, bold
+        sb.append(getColored("+-----------------------------------------+\n", "\033[36m")); // Cyan
+        sb.append("\n");
+        
+        // Summary
+        sb.append(getColored("Summary\n", "\033[1;33m")); // Bold yellow
+        sb.append("  Total Commits: ").append(getColored(String.valueOf(stats.totalCommits), "\033[32m")).append("\n"); // Green
+        sb.append(" Date Range: ").append(getColored(stats.firstCommitDate + " to " + stats.lastCommitDate, "\033[32m")).append("\n"); // Green
+        sb.append("\n");
+        
+        // Top Authors
+        sb.append(getColored("Top Authors\n", "\033[1;33m")); // Bold yellow
+        renderTopItems(sb, stats.authorCommits, 10);
+        sb.append("\n");
+        
+        // Commit Activity
+        sb.append(getColored("Commit Activity\n", "\033[1;33m")); // Bold yellow
+        renderBarChart(sb, stats.dailyCommits, 20);
+        sb.append("\n");
+        
+        // File Types
+        sb.append(getColored("File Types\n", "\033[1;33m")); // Bold yellow
+        renderTopItems(sb, stats.fileTypeDistribution, 10);
+        sb.append("\n");
+        
+        sb.append(getColored("Run with --help for more options\n", "\033[2m")); // Dim
+        
+        return sb.toString();
+    }
+    
+    private void renderTopItems(StringBuilder sb, Map<String, Integer> items, int maxItems) {
         // Sort by value in descending order and limit to maxItems
         Map<String, Integer> sortedItems = items.entrySet()
             .stream()
@@ -75,17 +83,17 @@ public class TerminalRenderer {
                 bar.append("#");
             }
             
-            System.out.printf("  %-25s %5d %s\n", key, count, getColored(bar.toString(), "\033[36m")); // Cyan
+            sb.append(String.format("  %-25s %5d %s\n", key, count, getColored(bar.toString(), "\033[36m"))); // Cyan
         }
         
         if (items.size() > maxItems) {
-            System.out.println("  ... and " + (items.size() - maxItems) + " more");
+            sb.append("  ... and ").append(items.size() - maxItems).append(" more\n");
         }
     }
     
-    private void renderBarChart(Map<String, Integer> data, int maxBars) {
+    private void renderBarChart(StringBuilder sb, Map<String, Integer> data, int maxBars) {
         if (data.isEmpty()) {
-            System.out.println(" No data to display");
+            sb.append(" No data to display\n");
             return;
         }
         
@@ -114,7 +122,7 @@ public class TerminalRenderer {
                 bar.append("#");
             }
             
-            System.out.printf("  %-12s %3d %s\n", date, count, getColored(bar.toString(), "\033[35m")); // Magenta
+            sb.append(String.format("  %-12s %3d %s\n", date, count, getColored(bar.toString(), "\033[35m"))); // Magenta
         }
     }
     
