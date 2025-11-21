@@ -65,7 +65,10 @@ public class AnalyzeCommand implements Callable<Integer> {
                     if (output != null) {
                         // If output file is specified, still render to terminal but also save to file
                         renderer.render(stats);
-                        outputContent = getTerminalOutputAsString(stats, noColor);
+                        // For file output, we usually want no color codes unless explicitly requested
+                        // But here we'll respect the noColor flag or default to stripping colors for files if not specified
+                        // For simplicity, we'll just use the same noColor setting
+                        outputContent = renderer.renderToString(stats);
                     } else {
                         renderer.render(stats);
                         return 0;
@@ -101,13 +104,5 @@ public class AnalyzeCommand implements Callable<Integer> {
         }
     }
     
-    // Helper method to capture terminal output as string
-    private String getTerminalOutputAsString(AnalyticsService.CommitStats stats, boolean noColor) {
-        // This is a simplified version - in a real implementation, we'd want to capture the actual
-        // output from the TerminalRenderer, but for now we'll just return a placeholder
-        TerminalRenderer renderer = new TerminalRenderer(noColor);
-        // Since we can't easily capture the renderer's output, we'll just return a message
-        // indicating that it was rendered to terminal
-        return "Terminal output rendered (not captured to string)";
-    }
+
 }
