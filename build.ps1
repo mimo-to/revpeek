@@ -32,7 +32,8 @@ New-Item -ItemType Directory -Path $tempDir | Out-Null
 Expand-Archive -Path $PICOLI_JAR -DestinationPath $tempDir
 Get-ChildItem -Path $tempDir -Recurse -File | ForEach-Object {
     $relativePath = Resolve-Path -Path $_.FullName -Relative
-    $relativePath = $relativePath.Substring(1)  # Remove leading .\
+    # Extract the relative path starting from the tempDir
+    $relativePath = $_.FullName.Substring($tempDir.Length + 1).Replace("\", "/")
     jar -uf build/revpeek.jar -C $tempDir $relativePath
 }
 Remove-Item -Path $tempDir -Recurse -Force
