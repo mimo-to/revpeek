@@ -26,7 +26,7 @@ curl -sL https://github.com/mimo-to/revpeek/releases/latest/download/revpeek.jar
 
 **Windows (PowerShell):**
 ```powershell
-Invoke-WebRequest -Uri "https://github.com/mimo-to/revpeek/releases/latest/download/revpeek.jar" -OutFile "revpeek.jar"; java -jar revpeek.jar
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri "https://github.com/mimo-to/revpeek/releases/latest/download/revpeek.jar" -OutFile "revpeek.jar"; java -jar revpeek.jar
 ```
 
 ### Manual Download
