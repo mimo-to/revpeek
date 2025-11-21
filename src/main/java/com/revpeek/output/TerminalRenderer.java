@@ -26,23 +26,23 @@ public class TerminalRenderer {
         System.out.println();
         
         // Summary
-        System.out.println(getColored("📊 Summary", "\033[1;33m")); // Bold yellow
+        System.out.println(getColored("Summary", "\033[1;33m")); // Bold yellow
         System.out.println("  Total Commits: " + getColored(String.valueOf(stats.totalCommits), "\033[32m")); // Green
         System.out.println(" Date Range: " + getColored(stats.firstCommitDate + " to " + stats.lastCommitDate, "\033[32m")); // Green
         System.out.println();
         
         // Top Authors
-        System.out.println(getColored("👥 Top Authors", "\033[1;33m")); // Bold yellow
+        System.out.println(getColored("Top Authors", "\033[1;33m")); // Bold yellow
         renderTopItems(stats.authorCommits, 10);
         System.out.println();
         
         // Commit Activity
-        System.out.println(getColored("📈 Commit Activity", "\033[1;33m")); // Bold yellow
+        System.out.println(getColored("Commit Activity", "\033[1;33m")); // Bold yellow
         renderBarChart(stats.dailyCommits, 20);
         System.out.println();
         
         // File Types
-        System.out.println(getColored("📁 File Types", "\033[1;33m")); // Bold yellow
+        System.out.println(getColored("File Types", "\033[1;33m")); // Bold yellow
         renderTopItems(stats.fileTypeDistribution, 10);
         System.out.println();
         
