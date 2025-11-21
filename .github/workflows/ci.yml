@@ -109,12 +109,13 @@ jobs:
           New-Item -ItemType Directory -Path $tempDir | Out-Null
           Expand-Archive -Path $picocliJar -DestinationPath $tempDir
           
+          # Remove META-INF to avoid manifest conflicts
+          if (Test-Path "$tempDir\META-INF") { Remove-Item -Path "$tempDir\META-INF" -Recurse -Force }
+
           # Add picocli classes to the main JAR
-          Get-ChildItem -Path $tempDir -Recurse -File | ForEach-Object {
-            $relativePath = Resolve-Path -Path $_.FullName -Relative
-            $relativePath = $relativePath.Substring(1)  # Remove leading .\
-            jar -uf build\revpeek.jar -C $tempDir $relativePath
-          }
+          Push-Location $tempDir
+          jar -uf ..\build\revpeek.jar .
+          Pop-Location
           
           # Clean up
           Remove-Item -Path $tempDir -Recurse -Force
