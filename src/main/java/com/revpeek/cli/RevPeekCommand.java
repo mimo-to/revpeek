@@ -28,7 +28,12 @@ public class RevPeekCommand implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         // Default: run analyze
-        return new AnalyzeCommand().call();
+        AnalyzeCommand analyze = new AnalyzeCommand();
+        // Manually propagate flags and set defaults since Picocli injection doesn't run here
+        analyze.json = this.json;
+        analyze.noColor = this.noColor;
+        analyze.format = "terminal"; // Default value
+        return analyze.call();
     }
 
     public static void main(String[] args) {
