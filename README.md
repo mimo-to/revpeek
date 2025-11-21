@@ -36,17 +36,26 @@ curl -sL https://github.com/mimo-to/revpeek/releases/latest/download/revpeek.jar
    java -jar revpeek.jar
    ```
 
-### Optional: Add to PATH
-To run `revpeek` from anywhere, create a simple alias or wrapper script:
+### 🌍 Global Installation (Run from anywhere)
+To use `revpeek` as a global command in any terminal:
 
-**Bash/Zsh:**
+**Windows (PowerShell):**
+1. Create a directory for your tools (e.g., `C:\Tools`).
+2. Move `revpeek.jar` there.
+3. Create a file named `revpeek.bat` in that folder with this content:
+   ```batch
+   @echo off
+   java -jar "C:\Tools\revpeek.jar" %*
+   ```
+4. Add `C:\Tools` to your System PATH environment variable.
+5. Restart your terminal. Now you can type `revpeek` anywhere!
+
+**Unix/Linux/macOS:**
 ```bash
-alias revpeek='java -jar /path/to/revpeek.jar'
-```
-
-**PowerShell:**
-```powershell
-Set-Alias -Name revpeek -Value "java -jar C:\path\to\revpeek.jar"
+sudo mv revpeek.jar /usr/local/bin/revpeek-jar
+echo '#!/bin/bash' | sudo tee /usr/local/bin/revpeek
+echo 'java -jar /usr/local/bin/revpeek-jar "$@"' | sudo tee -a /usr/local/bin/revpeek
+sudo chmod +x /usr/local/bin/revpeek
 ```
 
 ## �️ Usage
