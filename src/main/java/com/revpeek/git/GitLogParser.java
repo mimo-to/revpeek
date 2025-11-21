@@ -10,35 +10,17 @@ import java.util.regex.Pattern;
 
 public class GitLogParser {
     
-    public static List<Commit> parseGitLog(String gitLogOutput) {
-        List<Commit> commits = new ArrayList<>();
-        
-        String[] lines = gitLogOutput.split("\n");
-        for (String line : lines) {
-            if (line.trim().isEmpty()) continue;
-            
-            // Parse commit with format: hash|author_name|author_email|date|message
-            String[] parts = line.split(Pattern.quote("|"), 5);
-            if (parts.length >= 5) {
-                String hash = parts[0].trim();
-                String authorName = parts[1].trim();
-                String date = parts[3].trim();
-                String message = parts[4].trim();
-                
-                Commit commit = new Commit(hash, authorName, date, message); // Use just the name as author
-                commits.add(commit);
-            }
-        }
-        
-        return commits;
-    }
+    // Separator used in git log format
+    private static final String SEPARATOR = "|";
     
     public static List<Commit> getCommits(String since, String until) throws Exception {
-        // Format: git log --pretty=format:"%H|%an|%ae|%ad|%s"
+        // Format: hash|author_name|author_email|date|message
+        // We also add --numstat to get file changes in the same command
         List<String> cmd = new ArrayList<>();
         cmd.add("log");
-        cmd.add("--pretty=format:%H|%an|%ae|%ad|%s");
-        cmd.add("--date=short");  // critical
+        cmd.add("--pretty=format:COMMIT:%H|%an|%ae|%ad|%s");
+        cmd.add("--date=short");
+        cmd.add("--numstat");
         
         if (since != null && !since.isEmpty()) {
             cmd.add("--since=" + since);
@@ -49,7 +31,53 @@ public class GitLogParser {
         
         String[] cmdArray = cmd.toArray(new String[0]);
         String gitOutput = GitExecutor.executeGitCommand(cmdArray);
-        return parseGitLog(gitOutput);
+        return parseGitLogWithNumstat(gitOutput);
+    }
+    
+    private static List<Commit> parseGitLogWithNumstat(String gitOutput) {
+        List<Commit> commits = new ArrayList<>();
+        String[] lines = gitOutput.split("\n");
+        
+        Commit currentCommit = null;
+        
+        for (String line : lines) {
+            if (line.trim().isEmpty()) continue;
+            
+            if (line.startsWith("COMMIT:")) {
+                // New commit found
+                if (currentCommit != null) {
+                    commits.add(currentCommit);
+                }
+                
+                // Parse commit header: COMMIT:hash|author|email|date|message
+                String content = line.substring(7); // Remove "COMMIT:"
+                String[] parts = content.split(Pattern.quote(SEPARATOR), 5);
+                
+                if (parts.length >= 5) {
+                    String hash = parts[0].trim();
+                    String authorName = parts[1].trim();
+                    String date = parts[3].trim();
+                    String message = parts[4].trim();
+                    
+                    currentCommit = new Commit(hash, authorName, date, message);
+                }
+            } else if (currentCommit != null) {
+                // Parse numstat line: added deleted filename
+                // Example: 10 5 src/Main.java
+                String[] parts = line.split("\t");
+                if (parts.length >= 3) {
+                    String filename = parts[2];
+                    currentCommit.addFileChange(filename);
+                }
+            }
+        }
+        
+        // Add the last commit
+        if (currentCommit != null) {
+            commits.add(currentCommit);
+        }
+        
+        return commits;
     }
     
     public static Map<String, Integer> getCommitCountByAuthor(List<Commit> commits) {
@@ -61,26 +89,13 @@ public class GitLogParser {
         return authorCounts;
     }
     
-    public static Map<String, Integer> getFileTypeDistribution(List<Commit> commits) throws Exception {
+    public static Map<String, Integer> getFileTypeDistribution(List<Commit> commits) {
         Map<String, Integer> fileTypeCounts = new HashMap<>();
         
-        // Get file changes for each commit using --numstat
         for (Commit commit : commits) {
-            try {
-                String numstat = GitExecutor.executeGitCommand("show", "--numstat", "--pretty=format:", commit.getHash());
-                // Output: "12\t3\tsrc/App.java\n5\t0\tREADME.md"
-                String[] lines = numstat.split("\n");
-                for (String line : lines) {
-                    String[] parts = line.split("\t");
-                    if (parts.length >= 3) {
-                        String file = parts[2];
-                        String ext = getFileExtension(file);
-                        fileTypeCounts.merge(ext, 1, Integer::sum);
-                    }
-                }
-            } catch (Exception e) {
-                // If we can't get file changes for a commit, skip it
-                continue;
+            for (String file : commit.getFiles()) {
+                String ext = getFileExtension(file);
+                fileTypeCounts.merge(ext, 1, Integer::sum);
             }
         }
         
@@ -92,6 +107,6 @@ public class GitLogParser {
         if (lastDotIndex > 0 && lastDotIndex < fileName.length() - 1) {
             return fileName.substring(lastDotIndex + 1).toLowerCase();
         }
-        return "no_ext"; // for files without extensions
+        return "no_ext";
     }
 }
