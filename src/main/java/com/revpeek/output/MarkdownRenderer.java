@@ -41,7 +41,7 @@ public class MarkdownRenderer {
             int barLength = Math.max(1, (entry.getValue() * 20) / maxCommits);
             StringBuilder bar = new StringBuilder();
             for (int i = 0; i < barLength; i++) {
-                bar.append("█");
+                bar.append("#");
             }
             markdown.append("| " + escapeMarkdown(entry.getKey()) + " | " + entry.getValue() + " | " + bar.toString() + " |\n");
         }
@@ -69,7 +69,7 @@ public class MarkdownRenderer {
             int barLength = Math.max(1, (entry.getValue() * 20) / maxFiles);
             StringBuilder bar = new StringBuilder();
             for (int i = 0; i < barLength; i++) {
-                bar.append("█");
+                bar.append("#");
             }
             markdown.append("| " + escapeMarkdown(entry.getKey()) + " | " + entry.getValue() + " | " + bar.toString() + " |\n");
         }
