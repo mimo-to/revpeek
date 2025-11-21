@@ -53,6 +53,7 @@ public class TerminalRenderer {
         sb.append("\n");
         
         sb.append(getColored("Run with --help for more options\n", "\033[2m")); // Dim
+        sb.append(getColored("RevPeek - A Git Analytics CLI Tool by mimo-to\n", "\033[1;30m")); // Bold Dark Gray
         
         return sb.toString();
     }

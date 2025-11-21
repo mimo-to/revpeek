@@ -54,36 +54,59 @@ echo 'java -jar /usr/local/bin/revpeek-jar "$@"' | sudo tee -a /usr/local/bin/re
 sudo chmod +x /usr/local/bin/revpeek
 ```
 
-## �️ Usage
+## 🛠️ Usage
 
-Navigate to any Git repository and run:
+Once installed, navigate to any Git repository and run:
 
 ```bash
 revpeek
 ```
 
-### Common Commands
+### 🔍 Commands & Options
 
-| Command | Description |
-|---------|-------------|
-| `revpeek` | Analyze the current repository (default) |
-| `revpeek analyze --since=2023-01-01` | Analyze commits from a specific date |
-| `revpeek analyze --format=html -o report.html` | Generate a visual HTML report |
-| `revpeek --json` | Output raw JSON data for custom tooling |
+**1. Analyze (Default)**
+Analyze the current repository and show a summary in the terminal.
+```bash
+revpeek analyze
+```
+*Options:*
+*   `--since="2023-01-01"`: Analyze commits starting from a date.
+*   `--until="2023-12-31"`: Analyze commits up to a date.
+*   `--no-color`: Disable colored output.
 
-### Examples
+**2. Export Reports**
+Generate reports in different formats (HTML, Markdown, JSON).
+```bash
+# Generate a visual HTML report
+revpeek export --format=html -o report.html
+
+# Generate a Markdown report for documentation
+revpeek export --format=markdown -o ANALYTICS.md
+
+# Output raw JSON (great for scripts)
+revpeek export --format=json
+```
+
+**3. JSON Output (Quick)**
+Get raw JSON output instantly for integration with other tools (like `jq`).
+```bash
+revpeek --json
+```
+
+**4. Help**
+See all available commands and options.
+```bash
+revpeek --help
+```
+
+### 💡 Examples
 
 **Analyze the last 30 days:**
 ```bash
 revpeek analyze --since="30 days ago"
 ```
 
-**Export a Markdown report for documentation:**
-```bash
-revpeek analyze --format=markdown > ANALYTICS.md
-```
-
-**CI/CD Integration (JSON output):**
+**CI/CD Integration (Check commit count):**
 ```bash
 revpeek --json | jq '.totalCommits'
 ```
@@ -116,4 +139,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
+## 📄 License
+
 Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+**RevPeek** - A Git Analytics CLI Tool by [mimo-to](https://github.com/mimo-to)
