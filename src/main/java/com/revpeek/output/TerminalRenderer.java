@@ -20,9 +20,9 @@ public class TerminalRenderer {
     }
     
     public void render(AnalyticsService.CommitStats stats) {
-        System.out.println(getColored("┌─────────────────────────────────────────┐", "\033[36m")); // Cyan
-        System.out.println(getColored("│              \033[1mRevPeek Analytics\033[0m              │", "\033[36m")); // Cyan, bold
-        System.out.println(getColored("└─────────────────────────────────────────┘", "\033[36m")); // Cyan
+        System.out.println(getColored("+-----------------------------------------+", "\033[36m")); // Cyan
+        System.out.println(getColored("|              \033[1mRevPeek Analytics\033[0m              |", "\033[36m")); // Cyan, bold
+        System.out.println(getColored("+-----------------------------------------+", "\033[36m")); // Cyan
         System.out.println();
         
         // Summary
