@@ -4,8 +4,6 @@
 
 RevPeek is a zero-config, terminal-first analytics tool for Git repositories. It parses your commit history to provide visual insights about contributors, activity patterns, and file distribution—all without leaving your command line.
 
-![RevPeek Demo](https://via.placeholder.com/800x400?text=RevPeek+Terminal+Demo)
-
 ## 🚀 Features
 
 - **Zero Setup**: No servers, no databases, no config files. Just run it.
